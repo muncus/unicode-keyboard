@@ -16,7 +16,7 @@ char BULLET[ ] = "2022";
 char R_DOUBLE_ARROW[ ] = "21D2";
 char L_DOUBLE_ARROW[ ] = "21D0";
 char R_TRIPLE_ARROW[ ] = "21DB";
-char INFINITY[ ] = "221E";
+char INFINITY_SYMBOL[ ] = "221E";
 char POINT_OF_INTEREST[ ] = "2318";
 char HOURGLASS[ ] = "231B";
 char ACK[ ] = "2406";
@@ -45,8 +45,8 @@ char ALIEN_MONSTER[ ] = "1F47E";
 
 
 
-
-
+int buttonPin = 2;
+int buttonState = LOW;
 
 int ctrlKey = MODIFIERKEY_CTRL;
 int shiftKey = MODIFIERKEY_SHIFT;
@@ -54,19 +54,24 @@ int shiftKey = MODIFIERKEY_SHIFT;
 void setup() {
   Serial.begin(9600);
   Keyboard.begin();
+  pinMode(buttonPin, INPUT);
   delay(3000);
 }
 
 void loop() {
-  // Your computer will receive these characters from a USB keyboard.
-  Keyboard.press(ctrlKey);
-  Keyboard.press(shiftKey);
-  Keyboard.press('u');
-  delay(100);
-  Keyboard.releaseAll();
-  delay(100);
-  Keyboard.print(PILE_OF_POO);
+  buttonState = digitalRead(buttonPin);
+  delay(30);
+  if(buttonState == HIGH){
+    Keyboard.press(ctrlKey);
+    Keyboard.press(shiftKey);
+    Keyboard.press('u');
+    delay(100);
+    Keyboard.releaseAll();
+    delay(100);
+    Keyboard.print(ANCHOR);
+    Keyboard.print(' ');
+  }
   
   // typing too rapidly can overwhelm a PC
-  delay(6000);
+  delay(100);
 }

@@ -21,7 +21,7 @@ It was built with a Teensy (2.0), and the Arduino code is based off of the
 Unicode characters available are defined in `keycodes.h`. If a symbol you want
 is not present, feel free to add it.
 
-The `emojitest.ino` file contains an array called `KEYMAP` which can be
+The `emojikeys.ino` file contains an array called `KEYMAP` which can be
 modified to output symbols of your choice.  When a pin goes `HIGH`, the
 character at that index of `KEYMAP` is output.
 

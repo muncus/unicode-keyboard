@@ -9,12 +9,13 @@
 #include "keycodes.h"
 
 // Keymap contains the symbol to be emitted when the corresponding pin is found to be high.
-const int KEYMAP_SIZE = 4;
-String KEYMAP[KEYMAP_SIZE] = {
+const int KEYMAP_SIZE = 5;
+const String KEYMAP[KEYMAP_SIZE] = {
   SKULL_CROSSBONES,
-  PILE_OF_POO,
+  NAUTICAL_STAR,
   SAILBOAT,
   TEACUP,
+  BEER,
 };
 
 int buttonState = HIGH;
@@ -57,7 +58,6 @@ void setup() {
   for(int i=0;i<KEYMAP_SIZE;i++){
     pinMode(i, INPUT_PULLUP);
   }
-  //delay(3000);
 }
 
 void loop() {
@@ -67,6 +67,5 @@ void loop() {
     if(buttonState == LOW){
       sendSequenceLinux(KEYMAP[i]);
     }
-    //delay(100);
   }
 }

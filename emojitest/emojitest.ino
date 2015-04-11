@@ -8,10 +8,6 @@
 
 #include "keycodes.h"
 
-const int ctrlKey = MODIFIERKEY_CTRL;
-const int shiftKey = MODIFIERKEY_SHIFT;
-
-
 // Keymap contains the symbol to be emitted when the corresponding pin is found to be high.
 const int KEYMAP_SIZE = 4;
 char* KEYMAP[KEYMAP_SIZE] = {
@@ -27,8 +23,8 @@ int buttonState = LOW;
  * This implementation is linux-specific, and relies on the code being ctrl+shift+u <keycode> <space>
  */
 void sendSequenceLinux(char* seq){
-  Keyboard.press(ctrlKey);
-  Keyboard.press(shiftKey);
+  Keyboard.press(MODIFIERKEY_CTRL);
+  Keyboard.press(MODIFIERKEY_ALT);
   Keyboard.press('u');
   delay(40);
   Keyboard.releaseAll();

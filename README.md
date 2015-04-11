@@ -27,8 +27,10 @@ character at that index of `KEYMAP` is output.
 
 ## Circuit
 
-The necessary circuit is pretty much the same as in the above example, but with
-multiple input buttons, starting with Pin 0.
+The circuit relies on the built-in pullup resistors in the Teensy (most arduino
+models also support this).
+Simply connect ground to one side of your pushbutton, and an input pin to the
+other. Repeat for each entry in the KEYMAP array.
 
 ### Future Work / To Do
 

@@ -17,7 +17,7 @@ String KEYMAP[KEYMAP_SIZE] = {
   TEACUP,
 };
 
-int buttonState = LOW;
+int buttonState = HIGH;
 
 /* The process for entering unicode key codes varies by OS.
  * This implementation is linux-specific, and relies on the code being ctrl+shift+u <keycode> <space>
@@ -55,7 +55,7 @@ void setup() {
   Serial.begin(9600);
   Keyboard.begin();
   for(int i=0;i<KEYMAP_SIZE;i++){
-    pinMode(i, INPUT);
+    pinMode(i, INPUT_PULLUP);
   }
   //delay(3000);
 }
@@ -64,7 +64,7 @@ void loop() {
   
   for(int i=0;i<KEYMAP_SIZE;i++){
     buttonState = digitalRead(i);
-    if(buttonState == HIGH){
+    if(buttonState == LOW){
       sendSequenceLinux(KEYMAP[i]);
     }
     //delay(100);

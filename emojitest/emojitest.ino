@@ -1,77 +1,71 @@
-/* Emoji Printing test - Linux only.
-   Loop prints the unicode pile of poo, using ctrl-shift-u <codepoint> <space>
-   
-   Teensy becomes a USB keyboard and types characters
+/* Emoji Keyboard - Linux only.
 
+   Functions as a simple usb keyboard device, outputting a variety of unicode symbols of interest.
+   relies on the unix input method: ctrl-shift-u <codepoint> <space>
    You must select Keyboard from the "Tools > USB Type" menu
-
    This example code is in the public domain.
 */
 
-// Unicode Key Codes of Interest
-char PILE_OF_POO[ ] = "1f4a9";
-char CIRCLEY_ETERNITY[ ] = "058D"; //right-facing armenian eternity symbol.
-char INTERROBANG[ ] = "203D";
-char BULLET[ ] = "2022";
-char R_DOUBLE_ARROW[ ] = "21D2";
-char L_DOUBLE_ARROW[ ] = "21D0";
-char R_TRIPLE_ARROW[ ] = "21DB";
-char INFINITY_SYMBOL[ ] = "221E";
-char POINT_OF_INTEREST[ ] = "2318";
-char HOURGLASS[ ] = "231B";
-char ACK[ ] = "2406";
-char NACK[ ] = "2415";
-char SNOWMAN[ ] = "2603";
-char SKULL_CROSSBONES[ ] = "2620";
-char RADIOACTIVE[ ] = "2622";
-char BIOHAZARD[ ] = "2623";
-char HAMMER_SICKLE[ ] = "262D";
-char ANCHOR[ ] = "2693";
-char ATOM[ ] = "269B";
-char SAILBOAT[ ] = "26F5";
-char CHECK[ ] = "2713";
-char CHECK_BOLD[ ] = "2714";
-char MULT_X_BOLD[ ] = "2716";
-char NAUTICAL_STAR[ ] = "272F";
-char ASTERIX_8[ ] = "274B";
-char TD_ARROW[ ] = "27BB";
-char R_ARROW_4[ ] = "2B46";
-char TEACUP[ ] = "1F375";
-char BEER[ ] = "1F37A";
-char GOAT[ ] = "1F410";
-char OCTOPUS[ ] = "1F419";
-char ALIEN_MONSTER[ ] = "1F47E";
+#include "keycodes.h"
+
+const int ctrlKey = MODIFIERKEY_CTRL;
+const int shiftKey = MODIFIERKEY_SHIFT;
 
 
+// Keymap contains the symbol to be emitted when the corresponding pin is found to be high.
+const int KEYMAP_SIZE = 4;
+char* KEYMAP[KEYMAP_SIZE] = {
+  CIRCLEY_ETERNITY,
+  BEER,
+  GOAT,
+  ALIEN_MONSTER,
+};
 
-
-int buttonPin = 2;
 int buttonState = LOW;
 
-int ctrlKey = MODIFIERKEY_CTRL;
-int shiftKey = MODIFIERKEY_SHIFT;
+/* The process for entering unicode key codes varies by OS.
+ * This implementation is linux-specific, and relies on the code being ctrl+shift+u <keycode> <space>
+ */
+void sendSequenceLinux(char* seq){
+  Keyboard.press(ctrlKey);
+  Keyboard.press(shiftKey);
+  Keyboard.press('u');
+  delay(40);
+  Keyboard.releaseAll();
+  delay(20);
+  Keyboard.print(seq);
+  Keyboard.print(' ');
+  delay(50);
+}
+
+// entirely untested.
+// based on advice from: fileformat.info/tip/microsoft/enter_unicode.htm
+void sendSequenceWindows(char* seq){
+  Keyboard.press(MODIFIERKEY_ALT);
+  Keyboard.print('+');
+  Keyboard.print(seq);
+  delay(20);
+  Keyboard.releaseAll();
+  delay(20);
+}
+
 
 void setup() {
   Serial.begin(9600);
   Keyboard.begin();
-  pinMode(buttonPin, INPUT);
+  for(int i=0;i<KEYMAP_SIZE;i++){
+    pinMode(i, INPUT);
+  }
   delay(3000);
 }
 
 void loop() {
-  buttonState = digitalRead(buttonPin);
-  delay(30);
-  if(buttonState == HIGH){
-    Keyboard.press(ctrlKey);
-    Keyboard.press(shiftKey);
-    Keyboard.press('u');
-    delay(100);
-    Keyboard.releaseAll();
-    delay(100);
-    Keyboard.print(ANCHOR);
-    Keyboard.print(' ');
-  }
   
-  // typing too rapidly can overwhelm a PC
-  delay(100);
+  for(int i=0;i<KEYMAP_SIZE;i++){
+    buttonState = digitalRead(i);
+    delay(30);
+    if(buttonState == HIGH){
+      sendSequenceLinux(KEYMAP[i]);
+    }
+  }
 }

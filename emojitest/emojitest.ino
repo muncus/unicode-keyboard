@@ -10,27 +10,29 @@
 
 // Keymap contains the symbol to be emitted when the corresponding pin is found to be high.
 const int KEYMAP_SIZE = 4;
-char* KEYMAP[KEYMAP_SIZE] = {
-  CIRCLEY_ETERNITY,
-  BEER,
-  GOAT,
-  ALIEN_MONSTER,
+String KEYMAP[KEYMAP_SIZE] = {
+  SKULL_CROSSBONES,
+  PILE_OF_POO,
+  SAILBOAT,
+  TEACUP,
 };
 
 int buttonState = LOW;
 
 /* The process for entering unicode key codes varies by OS.
  * This implementation is linux-specific, and relies on the code being ctrl+shift+u <keycode> <space>
+ * the delay calls are present to prevent overwhelming the host with input.
  */
-void sendSequenceLinux(char* seq){
+void sendSequenceLinux(String seq){
+  Serial.println(seq);
   Keyboard.press(MODIFIERKEY_CTRL);
-  Keyboard.press(MODIFIERKEY_ALT);
+  Keyboard.press(MODIFIERKEY_SHIFT);
   Keyboard.press('u');
-  delay(40);
+  delay(100);
   Keyboard.releaseAll();
-  delay(20);
+  delay(50);
   Keyboard.print(seq);
-  Keyboard.print(' ');
+  Keyboard.print(" ");
   delay(50);
 }
 
@@ -45,6 +47,9 @@ void sendSequenceWindows(char* seq){
   delay(20);
 }
 
+// A Mac equivalent requires the "Unicode Hex Input" to be enabled,
+// then hold Option, enter the keycode, release Option.
+
 
 void setup() {
   Serial.begin(9600);
@@ -52,16 +57,16 @@ void setup() {
   for(int i=0;i<KEYMAP_SIZE;i++){
     pinMode(i, INPUT);
   }
-  delay(3000);
+  //delay(3000);
 }
 
 void loop() {
   
   for(int i=0;i<KEYMAP_SIZE;i++){
     buttonState = digitalRead(i);
-    delay(30);
     if(buttonState == HIGH){
       sendSequenceLinux(KEYMAP[i]);
     }
+    //delay(100);
   }
 }

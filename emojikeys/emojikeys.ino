@@ -7,16 +7,7 @@
 */
 
 #include "keycodes.h"
-
-// Keymap contains the symbol to be emitted when the corresponding pin is found to be high.
-const int KEYMAP_SIZE = 5;
-const String KEYMAP[KEYMAP_SIZE] = {
-  SKULL_CROSSBONES,
-  NAUTICAL_STAR,
-  SAILBOAT,
-  TEACUP,
-  BEER,
-};
+#include "config.h"
 
 int buttonState = HIGH;
 

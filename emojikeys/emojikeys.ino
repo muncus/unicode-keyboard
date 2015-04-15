@@ -20,9 +20,9 @@ void sendSequenceLinux(String seq){
   Keyboard.press(MODIFIERKEY_CTRL);
   Keyboard.press(MODIFIERKEY_SHIFT);
   Keyboard.press('u');
-  delay(100);
+  delay(40);
   Keyboard.releaseAll();
-  delay(50);
+  delay(20);
   Keyboard.print(seq);
   Keyboard.print(" ");
   delay(50);

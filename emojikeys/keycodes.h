@@ -34,6 +34,7 @@ String TD_ARROW = "27bb";
 String R_ARROW_4 = "2b46";
 String TEACUP = "1f375";
 String BEER = "1f37a";
+String BEERS = "1f37b";
 String GOAT = "1f410";
 String OCTOPUS = "1f419";
 String ALIEN_MONSTER = "1f47e";
